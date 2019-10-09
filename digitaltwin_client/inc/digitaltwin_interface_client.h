@@ -125,7 +125,7 @@ typedef struct DIGITALTWIN_CLIENT_ASYNC_COMMAND_UPDATE_TAG
     const char* requestId;
     /** @brief  Payload that the device should send to the service. */
     /** @warning This data must be valid JSON.  See conceptual documentation on data_format.md for more information. */
-    const char* propertyData;
+    const unsigned char* propertyData;
     /** @brief  Status code to map back to the server.  Roughly maps to HTTP status codes.*/
     int statusCode;
 } DIGITALTWIN_CLIENT_ASYNC_COMMAND_UPDATE;
@@ -287,7 +287,7 @@ MOCKABLE_FUNCTION(, DIGITALTWIN_CLIENT_RESULT, DigitalTwin_InterfaceClient_SetCo
 
   @returns  A DIGITALTWIN_CLIENT_RESULT.
 */
-MOCKABLE_FUNCTION(, DIGITALTWIN_CLIENT_RESULT, DigitalTwin_InterfaceClient_SendTelemetryAsync, DIGITALTWIN_INTERFACE_CLIENT_HANDLE, dtInterfaceClientHandle, const char*, telemetryName, const char*, messageData, DIGITALTWIN_CLIENT_TELEMETRY_CONFIRMATION_CALLBACK, telemetryConfirmationCallback, void*, userContextCallback);
+MOCKABLE_FUNCTION(, DIGITALTWIN_CLIENT_RESULT, DigitalTwin_InterfaceClient_SendTelemetryAsync, DIGITALTWIN_INTERFACE_CLIENT_HANDLE, dtInterfaceClientHandle, const char*, telemetryName, const unsigned char*, messageData, DIGITALTWIN_CLIENT_TELEMETRY_CONFIRMATION_CALLBACK, telemetryConfirmationCallback, void*, userContextCallback);
 
 /** 
   @brief Sends a Digital Twin property to the server.
@@ -329,7 +329,7 @@ MOCKABLE_FUNCTION(, DIGITALTWIN_CLIENT_RESULT, DigitalTwin_InterfaceClient_SendT
   @returns  A DIGITALTWIN_CLIENT_RESULT.
 */
 
-MOCKABLE_FUNCTION(, DIGITALTWIN_CLIENT_RESULT, DigitalTwin_InterfaceClient_ReportPropertyAsync, DIGITALTWIN_INTERFACE_CLIENT_HANDLE, dtInterfaceClientHandle, const char*, propertyName, const char*, propertyData, const DIGITALTWIN_CLIENT_PROPERTY_RESPONSE*, dtResponse, DIGITALTWIN_REPORTED_PROPERTY_UPDATED_CALLBACK, dtReportedPropertyCallback, void*, userContextCallback);
+MOCKABLE_FUNCTION(, DIGITALTWIN_CLIENT_RESULT, DigitalTwin_InterfaceClient_ReportPropertyAsync, DIGITALTWIN_INTERFACE_CLIENT_HANDLE, dtInterfaceClientHandle, const char*, propertyName, const unsigned char*, propertyData, const DIGITALTWIN_CLIENT_PROPERTY_RESPONSE*, dtResponse, DIGITALTWIN_REPORTED_PROPERTY_UPDATED_CALLBACK, dtReportedPropertyCallback, void*, userContextCallback);
 
 /** 
   @brief Sends an update of the status of a pending asynchronous command.

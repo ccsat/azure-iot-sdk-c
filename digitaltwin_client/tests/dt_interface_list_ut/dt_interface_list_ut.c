@@ -159,10 +159,10 @@ static DIGITALTWIN_INTERFACE_CLIENT_HANDLE dtTestInterfaceArray[] = { DT_TEST_IN
 static const char* testDTInterfaceListRegistartionBody1Interface = 
 DT_TEST_INTERFACE_REGISTER_START DT_TEST_INTERFACE_JSON_TUPLE_1 DT_TEST_INTERFACE_REGISTER_END;
 
-static const char* testDTInterfaceListRegistartionBody2Interfaces = 
+static const char* testDTInterfaceListRegistartionBody2Interfaces =
 DT_TEST_INTERFACE_REGISTER_START DT_TEST_INTERFACE_JSON_TUPLE_1 DT_TEST_JSON_COMMA DT_TEST_INTERFACE_JSON_TUPLE_2 DT_TEST_INTERFACE_REGISTER_END;
 
-static const char* testDTInterfaceListRegistartionBody3Interfaces = 
+static const char* testDTInterfaceListRegistartionBody3Interfaces =
 DT_TEST_INTERFACE_REGISTER_START DT_TEST_INTERFACE_JSON_TUPLE_1 DT_TEST_JSON_COMMA DT_TEST_INTERFACE_JSON_TUPLE_2 DT_TEST_JSON_COMMA DT_TEST_INTERFACE_JSON_TUPLE_3 DT_TEST_INTERFACE_REGISTER_END;
 
 static const IOTHUB_MESSAGE_HANDLE dtTestMessageHande = (IOTHUB_MESSAGE_HANDLE)0x1400;
@@ -195,10 +195,10 @@ static void on_umock_c_error(UMOCK_C_ERROR_CODE error_code)
 
 const char* test_dtInterfaceList_ExpectedMessageBody;
 
-DIGITALTWIN_CLIENT_RESULT impl_test_DT_InterfaceClient_CreateTelemetryMessage(const char* interfaceId, const char* componentName, const char* telemetryName, const char* messageData, IOTHUB_MESSAGE_HANDLE* telemetryMessageHandle)
+DIGITALTWIN_CLIENT_RESULT impl_test_DT_InterfaceClient_CreateTelemetryMessage(const char* interfaceId, const char* componentName, const char* telemetryName, const unsigned char* messageData, IOTHUB_MESSAGE_HANDLE* telemetryMessageHandle)
 {
     // Verify that the JSON generated during message creation (and hence being passed to this function) is as expected
-    ASSERT_ARE_EQUAL(char_ptr, test_dtInterfaceList_ExpectedMessageBody, messageData);
+    ASSERT_ARE_EQUAL(char_ptr, (const unsigned char*)test_dtInterfaceList_ExpectedMessageBody, messageData);
 
     (void)interfaceId;
     (void)componentName;

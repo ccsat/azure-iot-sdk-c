@@ -190,7 +190,7 @@ static int VerifyExpectedProperty(const char* testName, const DIGITALTWIN_CLIENT
 // 
 
 static const char* DT_E2E_SendProperty1_PropertyName = "SendProperty1_Name";
-static const char* DT_E2E_SendProperty1_PropertyData = "\"SendProperty1_Data\"";
+static const unsigned char* DT_E2E_SendProperty1_PropertyData = ((const unsigned char*)"\"SendProperty1_Data\"");
 
 static void DT_E2E_SendReportedProperty_Callback(DIGITALTWIN_CLIENT_RESULT dtReportedStatus, void* userContextCallback)
 {
@@ -279,7 +279,7 @@ void DT_E2E_ProcessUpdatedProperty1(const DIGITALTWIN_CLIENT_PROPERTY_UPDATE* dt
         DIGITALTWIN_CLIENT_RESULT result;
 
         result = DigitalTwin_InterfaceClient_ReportPropertyAsync(propertiesTestContext->interfaceHandle, DT_E2E_PROCESS_UPDATED_PROPERTY1_NAME, 
-                                                                 "\"ValueOfPropertyBeingSet_1\"", &propertyResponse, NULL, NULL);
+                                                                 (const unsigned char *)"\"ValueOfPropertyBeingSet_1\"", &propertyResponse, NULL, NULL);
         if (result != DIGITALTWIN_CLIENT_OK)
         {
             LogError("DigitalTwin_InterfaceClient_ReportPropertyAsync failed, error = <%s>", MU_ENUM_TO_STRING(DIGITALTWIN_CLIENT_RESULT, result));

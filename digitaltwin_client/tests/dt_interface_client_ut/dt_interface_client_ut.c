@@ -145,9 +145,9 @@ IMPLEMENT_UMOCK_C_ENUM_TYPE(DIGITALTWIN_CLIENT_RESULT, DIGITALTWIN_CLIENT_RESULT
 TEST_DEFINE_ENUM_TYPE(DT_COMMAND_PROCESSOR_RESULT, DT_COMMAND_PROCESSOR_RESULT_VALUES);
 IMPLEMENT_UMOCK_C_ENUM_TYPE(DT_COMMAND_PROCESSOR_RESULT, DT_COMMAND_PROCESSOR_RESULT_VALUES);
 
-#define DT_TEST_MESSAGE_DATA_VALUE "MessageData"
+#define DT_TEST_MESSAGE_DATA_VALUE ((const unsigned char *)"MessageData")
 static const char* dtTestTelemetryName = "TestDTTelemetryName";
-static const char* dtTestMessageData = DT_TEST_MESSAGE_DATA_VALUE;
+static const unsigned char* dtTestMessageData = DT_TEST_MESSAGE_DATA_VALUE;
 static const size_t dtTestMessageDataLen = sizeof(DT_TEST_MESSAGE_DATA_VALUE) - 1;
 
 static void* testDTInterfaceCallbackContext = (void*)0x1236;
@@ -188,8 +188,8 @@ typedef enum DT_TEST_PROPERTY_UPDATE_TEST_TAG
 typedef struct DT_TEST_EXPECTED_PROPERTY_STATUS_TAG
 {
     const char* expectedPropertyName[DT_TEST_MAX_PROPERTIES];
-    const char* expectedDesiredData[DT_TEST_MAX_PROPERTIES];
-    const char* expectedReportedData[DT_TEST_MAX_PROPERTIES];
+    const unsigned char* expectedDesiredData[DT_TEST_MAX_PROPERTIES];
+    const unsigned char* expectedReportedData[DT_TEST_MAX_PROPERTIES];
     int currentProperty;
     int maxProperty;
 } DT_TEST_EXPECTED_PROPERTY_STATUS;
@@ -202,13 +202,13 @@ DT_TEST_EXPECTED_PROPERTY_STATUS dtTestExpectedPropertyStatus;
 #define DT_TEST_PROPERTY_NAME3   "DTTestProperty3"
 
 // Note that strings have the " " around value passed in so it is treated as a json value
-#define DT_TEST_PROPERTY_DESIRED_VALUE1   "\"Prop1-Value\""
-#define DT_TEST_PROPERTY_DESIRED_VALUE2   "\"Prop2-Value\""
-#define DT_TEST_PROPERTY_DESIRED_VALUE3   "{\"ComplexValue\":1234}"
+#define DT_TEST_PROPERTY_DESIRED_VALUE1   ((const unsigned char *)"\"Prop1-Value\"")
+#define DT_TEST_PROPERTY_DESIRED_VALUE2   ((const unsigned char *)"\"Prop2-Value\"")
+#define DT_TEST_PROPERTY_DESIRED_VALUE3   ((const unsigned char *)"{\"ComplexValue\":1234}")
 
-#define DT_TEST_PROPERTY_REPORTED_VALUE1   "\"PreviouslyReported1\""
-#define DT_TEST_PROPERTY_REPORTED_VALUE2   "\"PreviouslyReported2\""
-#define DT_TEST_PROPERTY_REPORTED_VALUE3   "{\"ComplexValue\":0}"
+#define DT_TEST_PROPERTY_REPORTED_VALUE1   ((const unsigned char *)"\"PreviouslyReported1\"")
+#define DT_TEST_PROPERTY_REPORTED_VALUE2   ((const unsigned char *)"\"PreviouslyReported2\"")
+#define DT_TEST_PROPERTY_REPORTED_VALUE3   ((const unsigned char *)"{\"ComplexValue\":0}")
 
 static const int DT_TEST_PROPERTY_VERSION = 12;
 static DT_TEST_PROPERTY_UPDATE_TEST dtTestPropertyUpdateTest;
@@ -256,7 +256,7 @@ static const int dtTestAsyncCommandResponseStatus2 = 5;
 static const char dtTestAsyncCommandResponseExpected2[] = "{\"payload\":" DT_TEST_ASYNC_COMMAND_RESPONSE_2 "," "\"requestId\":" DT_TEST_COMMAND_REQUEST_ID "}";
 
 #define DT_TEST_ASYNC_COMMAND_RESPONSE_3 "Payload of response for async command3"
-static char dtTestAsyncCommandResponse3[] = DT_TEST_ASYNC_COMMAND_RESPONSE_3;
+static unsigned char dtTestAsyncCommandResponse3[] = DT_TEST_ASYNC_COMMAND_RESPONSE_3;
 static const size_t dtTestAsyncCommandResponseLen3 = sizeof(dtTestAsyncCommandResponse3) - 1;
 static const int dtTestAsyncCommandResponseStatus3 = DIGITALTWIN_ASYNC_STATUS_CODE_PENDING;
 static const char dtTestAsyncCommandResponseExpected3[] = "{\"payload\":" DT_TEST_ASYNC_COMMAND_RESPONSE_3 "," "\"requestId\":" DT_TEST_COMMAND_REQUEST_ID "}";
@@ -420,13 +420,13 @@ static void test_Impl_DT_PropertyUpdate(const DIGITALTWIN_CLIENT_PROPERTY_UPDATE
                        "Only expected %d property callbacks but received more", dtTestExpectedPropertyStatus.maxProperty);
 
         const char* expectedPropertyName = dtTestExpectedPropertyStatus.expectedPropertyName[currentProperty];
-        const char* expectedDesiredPropertyData = dtTestExpectedPropertyStatus.expectedDesiredData[currentProperty];
+        const unsigned char* expectedDesiredPropertyData = dtTestExpectedPropertyStatus.expectedDesiredData[currentProperty];
 
         ASSERT_ARE_EQUAL(int, 0, strcmp(expectedPropertyName, (char*)dtClientPropertyUpdate->propertyName),
                          "Expected property name <%s> does not match actual name <%s>", expectedPropertyName, (char*)dtClientPropertyUpdate->propertyDesired);
-        ASSERT_ARE_EQUAL(size_t, strlen(expectedDesiredPropertyData), dtClientPropertyUpdate->propertyDesiredLen,
-                         "Expected desired property length <%d> does not match actual <%d>", strlen(expectedDesiredPropertyData), dtClientPropertyUpdate->propertyDesiredLen);
-        ASSERT_ARE_EQUAL(int, 0, strncmp(expectedDesiredPropertyData, (char*)dtClientPropertyUpdate->propertyDesired, dtClientPropertyUpdate->propertyDesiredLen),
+        ASSERT_ARE_EQUAL(size_t, strlen((const char*)expectedDesiredPropertyData), dtClientPropertyUpdate->propertyDesiredLen,
+                         "Expected desired property length <%d> does not match actual <%d>", strlen((const char*)expectedDesiredPropertyData), dtClientPropertyUpdate->propertyDesiredLen);
+        ASSERT_ARE_EQUAL(int, 0, strncmp((const char*)expectedDesiredPropertyData, (const char*)dtClientPropertyUpdate->propertyDesired, dtClientPropertyUpdate->propertyDesiredLen),
                          "Expected desired property data <%s> does not match actual <%.*s>", expectedPropertyName, (int)dtClientPropertyUpdate->propertyDesiredLen, (char*)dtClientPropertyUpdate->propertyDesired);
         ASSERT_ARE_EQUAL(void_ptr, testDTPropertyCallbackContext, userInterfaceContext, 
                          "User callback context does not match expected");
@@ -435,11 +435,11 @@ static void test_Impl_DT_PropertyUpdate(const DIGITALTWIN_CLIENT_PROPERTY_UPDATE
 
         if (dtTestPropertyUpdateTest == DT_TEST_PROPERTY_UPDATE_TEST_REPORTED_EXPECTED)
         {
-            const char* expectedReportedPropertyData = dtTestExpectedPropertyStatus.expectedReportedData[currentProperty];
+            const unsigned char* expectedReportedPropertyData = dtTestExpectedPropertyStatus.expectedReportedData[currentProperty];
             ASSERT_IS_NOT_NULL(dtClientPropertyUpdate->propertyReported, "Reported property is NULL");
-            ASSERT_ARE_EQUAL(int, strlen(expectedReportedPropertyData), dtClientPropertyUpdate->propertyReportedLen, 
-                             "Expected propertyReportedLen <%d> does not match actual <%d>", strlen(expectedReportedPropertyData), dtClientPropertyUpdate->propertyReportedLen);
-            ASSERT_ARE_EQUAL(int, 0, strcmp(expectedReportedPropertyData, (char*)dtClientPropertyUpdate->propertyReported),
+            ASSERT_ARE_EQUAL(int, strlen((const char*)expectedReportedPropertyData), dtClientPropertyUpdate->propertyReportedLen,
+                             "Expected propertyReportedLen <%d> does not match actual <%d>", strlen((const char*)expectedReportedPropertyData), dtClientPropertyUpdate->propertyReportedLen);
+            ASSERT_ARE_EQUAL(int, 0, strcmp((const char*)expectedReportedPropertyData, (const char*)dtClientPropertyUpdate->propertyReported),
                              "Expected propertyReported <%s> does not match expected <%.*s>", expectedReportedPropertyData, dtClientPropertyUpdate->propertyReportedLen, dtClientPropertyUpdate->propertyReported);
         }
         else if (dtTestPropertyUpdateTest == DT_TEST_PROPERTY_UPDATE_TEST_NO_REPORTED_EXPECTED)

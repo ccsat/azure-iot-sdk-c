@@ -51,7 +51,7 @@ static void DigitalTwinSampleDeviceInfo_PropertyCallback(DIGITALTWIN_CLIENT_RESU
 // DigitalTwinSampleDeviceInfo_ReportPropertyAsync is a helper function to report a DeviceInfo's properties.
 // It invokes underlying DigitalTwin API for reporting properties and sets up its callback on completion.
 //
-static DIGITALTWIN_CLIENT_RESULT DigitalTwinSampleDeviceInfo_ReportPropertyAsync(DIGITALTWIN_INTERFACE_CLIENT_HANDLE interfaceHandle, const char* propertyName, const char* propertyData)
+static DIGITALTWIN_CLIENT_RESULT DigitalTwinSampleDeviceInfo_ReportPropertyAsync(DIGITALTWIN_INTERFACE_CLIENT_HANDLE interfaceHandle, const char* propertyName, const unsigned char* propertyData)
 {
     DIGITALTWIN_CLIENT_RESULT result;
 
@@ -83,7 +83,7 @@ static DIGITALTWIN_CLIENT_RESULT DigitalTwinSampleDeviceInfo_ReportSoftwareVersi
     if(DeviceInformation_SwVersionProperty(&swVersionPropertyValue) == RESULT_OK)
     {
         result = DigitalTwinSampleDeviceInfo_ReportPropertyAsync(interfaceHandle, digitaltwinSample_SoftwareVersionProperty, 
-                                                                 swVersionPropertyValue);
+                                                                 (const unsigned char *)swVersionPropertyValue);
         free(swVersionPropertyValue);
     }
     else
@@ -105,7 +105,7 @@ static DIGITALTWIN_CLIENT_RESULT DigitalTwinSampleDeviceInfo_ReportManufacturerA
     if(DeviceInformation_ManufacturerProperty(&manufacturerPropertyValue) == RESULT_OK)
     {
         result = DigitalTwinSampleDeviceInfo_ReportPropertyAsync(interfaceHandle, digitaltwinSample_ManufacturerProperty, 
-                                                                 manufacturerPropertyValue);
+                                                                 (const unsigned char*)manufacturerPropertyValue);
         free(manufacturerPropertyValue);
     }
     else
@@ -127,7 +127,7 @@ static DIGITALTWIN_CLIENT_RESULT DigitalTwinSampleDeviceInfo_ReportModelAsync(DI
     if(DeviceInformation_ModelProperty(&modelPropertyValue) == RESULT_OK)
     {
         result = DigitalTwinSampleDeviceInfo_ReportPropertyAsync(interfaceHandle, digitaltwinSample_ModelProperty, 
-                                                                 modelPropertyValue);
+                                                                 (const unsigned char*)modelPropertyValue);
         free(modelPropertyValue);
     }
     else
@@ -149,7 +149,7 @@ static DIGITALTWIN_CLIENT_RESULT DigitalTwinSampleDeviceInfo_ReportOSNameAsync(D
     if(DeviceInformation_OsNameProperty(&osNamePropertyValue) == RESULT_OK)
     {
         result = DigitalTwinSampleDeviceInfo_ReportPropertyAsync(interfaceHandle, digitaltwinSample_OsNameProperty, 
-                                                                 osNamePropertyValue);
+                                                                 (const unsigned char*)osNamePropertyValue);
         free(osNamePropertyValue);
     }
     else
@@ -171,7 +171,7 @@ static DIGITALTWIN_CLIENT_RESULT DigitalTwinSampleDeviceInfo_ReportProcessorArch
     if(DeviceInformation_ProcessorArchitectureProperty(&processorArchPropertyValue) == RESULT_OK)
     {
         result = DigitalTwinSampleDeviceInfo_ReportPropertyAsync(interfaceHandle, digitaltwinSample_ProcessorArchitectureProperty,
-                                                                 processorArchPropertyValue);
+                                                                 (const unsigned char*)processorArchPropertyValue);
         free(processorArchPropertyValue);
     }
     else
@@ -193,7 +193,7 @@ static DIGITALTWIN_CLIENT_RESULT DigitalTwinSampleDeviceInfo_ReportProcessorManu
     if(DeviceInformation_ProcessorManufacturerProperty(&processorManufacturerPropertyValue) == RESULT_OK)
     {
         result = DigitalTwinSampleDeviceInfo_ReportPropertyAsync(interfaceHandle, digitaltwinSample_ProcessorManufacturerProperty,
-                                                                 processorManufacturerPropertyValue);
+                                                                 (const unsigned char*)processorManufacturerPropertyValue);
         free(processorManufacturerPropertyValue);
     }
     else
@@ -215,7 +215,7 @@ static DIGITALTWIN_CLIENT_RESULT DigitalTwinSampleDeviceInfo_ReportTotalStorageA
     if(DeviceInformation_TotalStorageProperty(&totalStoragePropertyValue) == RESULT_OK)
     {
         result = DigitalTwinSampleDeviceInfo_ReportPropertyAsync(interfaceHandle, digitaltwinSample_TotalStorageProperty,
-                                                                 totalStoragePropertyValue);
+                                                                 (const unsigned char*)totalStoragePropertyValue);
         free(totalStoragePropertyValue);
     }
     else
@@ -237,7 +237,7 @@ static DIGITALTWIN_CLIENT_RESULT DigitalTwinSampleDeviceInfo_ReportTotalMemoryAs
     if(DeviceInformation_TotalMemoryProperty(&totalMemoryPropertyValue) == RESULT_OK)
     {
         result = DigitalTwinSampleDeviceInfo_ReportPropertyAsync(interfaceHandle, digitaltwinSample_TotalMemoryProperty, 
-                                                                 totalMemoryPropertyValue);
+                                                                 (const unsigned char*)totalMemoryPropertyValue);
         free(totalMemoryPropertyValue);
     }
     else
